@@ -94,11 +94,11 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     final forgotPasswordButton = Material(
-      borderRadius: BorderRadius.circular(15.0),
+      borderRadius: BorderRadius.circular(30.0),
       color: Colors.deepPurple,
       child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width/2,
-        padding:EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        minWidth: MediaQuery.of(context).size.width/3,
+        padding:EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
         onPressed: () {
           Navigator.push(
           context,
@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         child: Text("Forgot Password?",
             textAlign: TextAlign.left,
-            style: style.copyWith(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15.0)),
+            style: style.copyWith(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
       ),
     );
 
@@ -124,19 +124,19 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Padding(
               padding: const EdgeInsets.all(36.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(height: 45.0),
                   emailField,
                   SizedBox(height: 25.0),
                   passwordField,
+                  SizedBox(height: 15),
+                  forgotPasswordButton,
                   SizedBox(height: 15.0),
                   loginButton,
                   SizedBox(height: 15.0),
                   registerButton,
-                  SizedBox(height: 15),
-                  forgotPasswordButton,
                   ],
                 )
               )
