@@ -65,7 +65,9 @@ class _MyHomePageState extends State<MyHomePage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding:EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: () {
+          //TODO: Implement functionality on login
+        },
         child: Text("Login",
           textAlign: TextAlign.center,
           style: style.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),

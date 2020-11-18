@@ -21,7 +21,9 @@ class forgotPassword extends StatelessWidget {
       color: Colors.deepPurple,
       child: MaterialButton(
         padding:EdgeInsets.fromLTRB(10.0, 15.0, 15.0, 15.0),
-        onPressed: () {},
+        onPressed: () {
+          //TODO: Validate and send email
+        },
         child: Text("Send recovery e-mail",
             textAlign: TextAlign.left,
             style: style.copyWith(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.0)),

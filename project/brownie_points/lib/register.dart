@@ -82,8 +82,10 @@ class register extends StatelessWidget {
                   registerEmailField,
                   SizedBox(height: 15.0),
                   ElevatedButton(
-                    child: Text('Back to login'),
-                    onPressed: () {Navigator.pop(context);},
+                    child: Text('Register'),
+                    onPressed: () {
+                        //TODO: Implement checks for register
+                      },
                     ),
                   ],
               ),
