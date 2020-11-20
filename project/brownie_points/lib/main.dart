@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:brownie_points/pageTemplate.dart';
 import 'package:brownie_points/register.dart';
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 
 import 'forgotPassword.dart';
 
@@ -67,6 +67,10 @@ class _MyHomePageState extends State<MyHomePage> {
         padding:EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
           //TODO: Implement functionality on login
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => pageTemplate()),
+          );
         },
         child: Text("Login",
           textAlign: TextAlign.center,
