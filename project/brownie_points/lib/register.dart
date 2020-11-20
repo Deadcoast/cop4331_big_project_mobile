@@ -12,7 +12,7 @@ class register extends StatelessWidget {
         style: style,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "First Name",
+          labelText: "First Name",
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
         )
     );
@@ -22,7 +22,7 @@ class register extends StatelessWidget {
         style: style,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Last Name",
+          labelText: "Last Name",
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
         )
     );
@@ -32,7 +32,7 @@ class register extends StatelessWidget {
         style: style,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Username",
+          labelText: "Username",
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
         )
     );
@@ -42,7 +42,7 @@ class register extends StatelessWidget {
         style: style,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password",
+          labelText: "Password",
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
         )
     );
@@ -52,7 +52,7 @@ class register extends StatelessWidget {
         style: style,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "E-mail",
+          labelText: "E-mail",
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
         )
     );

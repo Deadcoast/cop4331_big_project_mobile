@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
       style: style,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "Email",
+        labelText: "E-mail",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular((32.0))),
       )
     );
@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
       style: style,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "Password",
+        labelText: "Password",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       )
     );
