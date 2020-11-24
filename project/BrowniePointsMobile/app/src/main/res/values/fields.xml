@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="LoginField">Username</string>
-    <string name="PasswordField">Password</string>
-    <string name="ForgotPassword">Forgot Password?</string>
-    <string name="LoginButton">Login</string>
-</resources>
