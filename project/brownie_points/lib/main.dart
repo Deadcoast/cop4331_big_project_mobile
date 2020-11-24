@@ -2,13 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+
 import 'package:brownie_points/pageTemplate.dart';
 import 'package:brownie_points/register.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'forgotPassword.dart';
+import 'jsonCalls.dart';
 
-void main() => runApp(MyApp());
+void main() {
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -34,18 +39,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String email = "";
+  String password = "";
+
   @override
   Widget build(BuildContext context) {
     TextStyle style = TextStyle(fontFamily: 'sans-serif', fontSize: 20.0);
 
-    final emailField = TextField(
+    final userNameField = TextField(
       obscureText: false,
       style: style,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        labelText: "E-mail",
+        labelText: "Username",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular((32.0))),
-      )
+      ),
+      onChanged: (text) {
+        email = text;
+      },
     );
 
     final passwordField = TextField(
@@ -55,7 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         labelText: "Password",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      )
+      ),
+      onChanged: (text) {
+        password = text;
+      },
     );
 
     final loginButton = Material(
@@ -66,11 +80,26 @@ class _MyHomePageState extends State<MyHomePage> {
         minWidth: MediaQuery.of(context).size.width,
         padding:EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          //TODO: Implement functionality on login
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => pageTemplate()),
-          );
+
+          JsonCall.login(email, password).then((value) {
+            if(value == null)
+            {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => pageTemplate()),
+              );}
+            else
+            {
+              Fluttertoast.showToast(
+                msg: value,
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.deepPurple,
+                fontSize: 16.0
+              );
+            }
+          });
+
         },
         child: Text("Login",
           textAlign: TextAlign.center,
@@ -97,12 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    final forgotPasswordButton = Material(
-      borderRadius: BorderRadius.circular(30.0),
-      color: Colors.deepPurple,
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width/3,
-        padding:EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+    final forgotPasswordButton = FlatButton(
         onPressed: () {
           Navigator.push(
           context,
@@ -111,12 +135,12 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         child: Text("Forgot Password?",
             textAlign: TextAlign.left,
-            style: style.copyWith(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
-      ),
-    );
+            style: style.copyWith(color: Colors.deepPurple, fontWeight: FontWeight.bold, fontSize: 18)),
+      );
 
     return Scaffold(
       appBar: AppBar(
+        leading:Container(),
         title: Text("Welcome to Brownie Points"),
       ),
       body: SingleChildScrollView(
@@ -132,12 +156,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(height: 45.0),
-                  emailField,
+                  userNameField,
                   SizedBox(height: 25.0),
                   passwordField,
-                  SizedBox(height: 15),
+                  SizedBox(height: 1),
                   forgotPasswordButton,
-                  SizedBox(height: 15.0),
+                  SizedBox(height: 1),
                   loginButton,
                   SizedBox(height: 15.0),
                   registerButton,
