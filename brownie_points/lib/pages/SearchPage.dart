@@ -7,10 +7,9 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  @override
-
   List<String> names = ["Recipe1", "Recipe2", "Recipe3", "Recipe2", "Recipe3", "Recipe2", "Recipe3", "Recipe2", "Recipe3", "Recipe2", "Recipe3", "Recipe2", "Recipe3", "Recipe2", "Recipe3", "Recipe2", "Recipe3"];
 
+  @override
   Widget build(BuildContext context) {
     return ListView.separated(
       itemCount: names.length,

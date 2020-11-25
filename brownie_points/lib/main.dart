@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
             {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => pageTemplate()),
+                MaterialPageRoute(builder: (context) => PageTemplate()),
               );
             }
             else
@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => register()),
+            MaterialPageRoute(builder: (context) => Register()),
           );
         },
         child: Text("Register",
@@ -131,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => forgotPassword()),
+          MaterialPageRoute(builder: (context) => ForgotPassword()),
           );
         },
         child: Text("Forgot Password?",

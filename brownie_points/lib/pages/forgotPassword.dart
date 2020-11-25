@@ -4,9 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class forgotPassword extends StatelessWidget {
+class ForgotPassword extends StatefulWidget {
+  @override
+  _ForgotPasswordState createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends State<ForgotPassword> {
   String username = "";
+
   String email = "";
+
   String password = "";
 
   @override
@@ -22,9 +29,6 @@ class forgotPassword extends StatelessWidget {
       ),
       onChanged: (text) {
         email = text;
-        setState() {
-          email;
-        }
       },
     );
 
@@ -38,9 +42,6 @@ class forgotPassword extends StatelessWidget {
       ),
       onChanged: (text) {
         username = text;
-        setState() {
-          username;
-        }
       },
     );
 
@@ -54,9 +55,6 @@ class forgotPassword extends StatelessWidget {
       ),
       onChanged: (text) {
         password = text;
-        setState() {
-          password;
-        }
       },
     );
 

@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class createRecipe extends StatefulWidget {
+class CreateRecipe extends StatefulWidget {
   @override
-  _createRecipeState createState() => _createRecipeState();
+  _CreateRecipeState createState() => _CreateRecipeState();
 }
 
-class _createRecipeState extends State<createRecipe> {
+class _CreateRecipeState extends State<CreateRecipe> {
   String title = "";
   int count = 1;
   int stepC = 1;
@@ -14,8 +14,8 @@ class _createRecipeState extends State<createRecipe> {
   @override
   Widget build(BuildContext context) {
     TextStyle style = TextStyle(fontFamily: 'sans-serif', fontSize: 20.0);
-    List<Widget> ingredients = new List.generate(count, (int i) => new ingredientField());
-    List<Widget> steps = new List.generate(stepC, (int i) => new stepsField());
+    List<Widget> ingredients = new List.generate(count, (int i) => new IngredientField());
+    List<Widget> steps = new List.generate(stepC, (int i) => new StepsField());
 
     final titleField = TextField(
       obscureText: false,
@@ -95,12 +95,12 @@ class _createRecipeState extends State<createRecipe> {
 }
 
 
-class ingredientField extends StatefulWidget {
+class IngredientField extends StatefulWidget {
   @override
-  _ingredientFieldState createState() => _ingredientFieldState();
+  _IngredientFieldState createState() => _IngredientFieldState();
 }
 
-class _ingredientFieldState extends State<ingredientField> {
+class _IngredientFieldState extends State<IngredientField> {
 
   String unit = 'g';
 
@@ -135,9 +135,6 @@ class _ingredientFieldState extends State<ingredientField> {
               iconSize: 16,
               onChanged: (val){
                 unit = val;
-                setState(() {
-                  unit;
-                });
               },
               items: <String>['g', 'kg', 'l', 'ml'].map<DropdownMenuItem<String>>((String value){
                 return DropdownMenuItem<String>(
@@ -152,12 +149,12 @@ class _ingredientFieldState extends State<ingredientField> {
   }
 }
 
-class stepsField extends StatefulWidget {
+class StepsField extends StatefulWidget {
   @override
-  _stepsFieldState createState() => _stepsFieldState();
+  _StepsFieldState createState() => _StepsFieldState();
 }
 
-class _stepsFieldState extends State<stepsField> {
+class _StepsFieldState extends State<StepsField> {
   String step = "";
 
   @override

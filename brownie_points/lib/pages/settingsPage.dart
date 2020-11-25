@@ -3,12 +3,12 @@ import 'package:brownie_points/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class profilePage extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   @override
-  _profilePageState createState() => _profilePageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _profilePageState extends State<profilePage> {
+class _ProfilePageState extends State<ProfilePage> {
 
   bool state = false;
   TextStyle style = TextStyle(fontFamily: 'sans-serif', fontSize: 20.0);

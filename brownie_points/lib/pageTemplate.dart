@@ -1,15 +1,12 @@
 
 
-import 'package:brownie_points/main.dart';
 import 'package:brownie_points/pages/SearchPage.dart';
-import 'package:brownie_points/pages/createRecipie.dart';
+import 'package:brownie_points/pages/createRecipe.dart';
 import 'package:brownie_points/pages/settingsPage.dart';
-import 'file:///C:/git/cop4331_big_project_mobile/brownie_points/lib/database/savePrefs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class pageTemplate extends StatelessWidget {
+class PageTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -42,8 +39,8 @@ class _NavBarState extends State<NavBar> {
   final tabs = [
     SearchPage(),
     Center(child:Text("My Recipes")),
-    createRecipe(),
-    profilePage(),
+    CreateRecipe(),
+    ProfilePage(),
   ];
 
   @override

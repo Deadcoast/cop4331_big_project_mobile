@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import '../database/jsonCalls.dart';
 
-class register extends StatelessWidget {
+class Register extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextStyle style = TextStyle(fontFamily: 'sans-serif', fontSize: 20.0);
