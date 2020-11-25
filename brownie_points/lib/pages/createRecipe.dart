@@ -10,12 +10,15 @@ class _CreateRecipeState extends State<CreateRecipe> {
   String title = "";
   int count = 1;
   int stepC = 1;
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
     TextStyle style = TextStyle(fontFamily: 'sans-serif', fontSize: 20.0);
-    List<Widget> ingredients = new List.generate(count, (int i) => new IngredientField());
     List<Widget> steps = new List.generate(stepC, (int i) => new StepsField());
+    List<String> units = new List.generate(count, (int i) => 'g');
+    List<String> amounts = new List.generate(count, (int i) => '');
+    List<String> ingredNames = new List.generate(count, (int i) => '');
 
     final titleField = TextField(
       obscureText: false,
@@ -28,6 +31,10 @@ class _CreateRecipeState extends State<CreateRecipe> {
         title = text;
       },
     );
+    ListView lst = ListView(
+      children: steps,
+      scrollDirection: Axis.vertical,
+    );
 
     return SingleChildScrollView(
         child: Container(
@@ -38,10 +45,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
                 titleField,
                 Container(
                   height: MediaQuery.of(context).size.height * .3,
-                  child: new ListView(
-                    children: steps,
-                    scrollDirection: Axis.vertical,
-                  ),
+                  child: lst,
                 ),
                 Container(
                     alignment: Alignment.bottomRight,
@@ -56,10 +60,63 @@ class _CreateRecipeState extends State<CreateRecipe> {
                 ),
                 Container(
                     height: MediaQuery.of(context).size.height * .3,
-                    child: new ListView(
-                      children: ingredients,
+                    child: ListView.builder(
                       scrollDirection: Axis.vertical,
-                    )
+                      itemCount: count,
+                      itemBuilder: (context, index) {
+                        return Row(
+                          children: [
+                            Container(
+                              width:MediaQuery.of(context).size.width * .60,
+                              child:TextFormField(
+                                decoration: InputDecoration(
+                                  labelText: "Ingredient",
+                                ),
+                                onChanged: (text) {
+                                  ingredNames[index] = text;
+                                  setState(() {
+                                    text;
+                                  });
+                                },
+                              ),
+                            ),
+                            Container(
+                              width:MediaQuery.of(context).size.width * .23,
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  labelText:"Amount",
+                                ),
+                                onChanged: (text) {
+                                  setState((){
+                                    amounts[index] = text;
+                                  });
+                                },
+                              ),
+                            ),
+                            Container(
+                                alignment: Alignment.bottomCenter,
+                                child: DropdownButton(
+                                  value: units[index],
+                                  icon: Icon(Icons.arrow_downward_rounded),
+                                  iconSize: 16,
+                                  onChanged: (val){
+                                    setState(() {
+                                      units[index] = val;
+                                    });
+                                  },
+                                  items: <String>['g', 'kg', 'l', 'ml'].map<DropdownMenuItem<String>>((String value){
+                                    return DropdownMenuItem<String>(
+                                        value:value,
+                                        child: Text(value)
+                                    );
+                                  }).toList(),
+                                )
+                            ),
+                          ],
+                        );
+                      }
+                    ),
                 ),
                 Container(
                     alignment: Alignment.bottomRight,
@@ -81,6 +138,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
                     padding:EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     onPressed: () {
                       //TODO: Implement create recipe into the API
+                      foo(title, {ingredNames, amounts, units}, steps);
                     },
                     child: Text("Create Recipe",
                         textAlign: TextAlign.center,
@@ -92,60 +150,20 @@ class _CreateRecipeState extends State<CreateRecipe> {
         )
     );
   }
-}
 
-
-class IngredientField extends StatefulWidget {
-  @override
-  _IngredientFieldState createState() => _IngredientFieldState();
-}
-
-class _IngredientFieldState extends State<IngredientField> {
-
-  String unit = 'g';
-
-  @override
-  Widget build(BuildContext context) {
-
-
-    return Row(
-      children: [
-        Container(
-          width:MediaQuery.of(context).size.width * .60,
-          child:TextFormField(
-            decoration: InputDecoration(
-              labelText: "Ingredient",
-            ),
-          ),
-        ),
-        Container(
-          width:MediaQuery.of(context).size.width * .23,
-          child: TextFormField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText:"Amount",
-              )
-          ),
-        ),
-        Container(
-            alignment: Alignment.bottomCenter,
-            child: DropdownButton(
-              value: unit,
-              icon: Icon(Icons.arrow_downward_rounded),
-              iconSize: 16,
-              onChanged: (val){
-                unit = val;
-              },
-              items: <String>['g', 'kg', 'l', 'ml'].map<DropdownMenuItem<String>>((String value){
-                return DropdownMenuItem<String>(
-                    value:value,
-                    child: Text(value)
-                );
-              }).toList(),
-            )
-        ),
-      ],
-    );
+  void foo(String title, Set<List<String>> ingredients, List<Widget> steps)
+  {
+    String jsonCode = "{ \n\"title\" :" + title + ",\n" ;
+    String ingred = "{\n";
+    for(int i = 0; i < count; i++)
+    {
+      ingred += ingredients.elementAt(0)[i] + " ";
+      ingred += ingredients.elementAt(1)[i] + " ";
+      ingred += ingredients.elementAt(2)[i] + "\n";
+    }
+    ingred += "}";
+    jsonCode += ingred;
+    print(jsonCode);
   }
 }
 
