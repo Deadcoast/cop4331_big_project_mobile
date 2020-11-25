@@ -1,3 +1,5 @@
+import 'package:brownie_points/forms/ingredientForm.dart';
+import 'package:brownie_points/forms/stepsForm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +17,6 @@ class _CreateRecipeState extends State<CreateRecipe> {
   @override
   Widget build(BuildContext context) {
     TextStyle style = TextStyle(fontFamily: 'sans-serif', fontSize: 20.0);
-    List<Widget> steps = new List.generate(stepC, (int i) => new StepsField());
-    List<String> units = new List.generate(count, (int i) => 'g');
-    List<String> amounts = new List.generate(count, (int i) => '');
-    List<String> ingredNames = new List.generate(count, (int i) => '');
 
     final titleField = TextField(
       obscureText: false,
@@ -31,10 +29,6 @@ class _CreateRecipeState extends State<CreateRecipe> {
         title = text;
       },
     );
-    ListView lst = ListView(
-      children: steps,
-      scrollDirection: Axis.vertical,
-    );
 
     return SingleChildScrollView(
         child: Container(
@@ -44,79 +38,14 @@ class _CreateRecipeState extends State<CreateRecipe> {
               children: <Widget>[
                 titleField,
                 Container(
-                  height: MediaQuery.of(context).size.height * .3,
-                  child: lst,
+                  child: SingleChildScrollView(
+                    child: StepsForm()
+                  ),
                 ),
                 Container(
-                    alignment: Alignment.bottomRight,
-                    child: FlatButton(
-                        child: Icon(Icons.add),
-                        onPressed: () {
-                          setState(() {
-                            stepC++;
-                          });
-                        }
-                    )
-                ),
-                Container(
-                    height: MediaQuery.of(context).size.height * .3,
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: count,
-                      itemBuilder: (context, index) {
-                        return Row(
-                          children: [
-                            Container(
-                              width:MediaQuery.of(context).size.width * .60,
-                              child:TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: "Ingredient",
-                                ),
-                                onChanged: (text) {
-                                  ingredNames[index] = text;
-                                  setState(() {
-                                    text;
-                                  });
-                                },
-                              ),
-                            ),
-                            Container(
-                              width:MediaQuery.of(context).size.width * .23,
-                              child: TextFormField(
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelText:"Amount",
-                                ),
-                                onChanged: (text) {
-                                  setState((){
-                                    amounts[index] = text;
-                                  });
-                                },
-                              ),
-                            ),
-                            Container(
-                                alignment: Alignment.bottomCenter,
-                                child: DropdownButton(
-                                  value: units[index],
-                                  icon: Icon(Icons.arrow_downward_rounded),
-                                  iconSize: 16,
-                                  onChanged: (val){
-                                    setState(() {
-                                      units[index] = val;
-                                    });
-                                  },
-                                  items: <String>['g', 'kg', 'l', 'ml'].map<DropdownMenuItem<String>>((String value){
-                                    return DropdownMenuItem<String>(
-                                        value:value,
-                                        child: Text(value)
-                                    );
-                                  }).toList(),
-                                )
-                            ),
-                          ],
-                        );
-                      }
-                    ),
+                  child:SingleChildScrollView(
+                    child: IngredientsForm(),
+                  ),
                 ),
                 Container(
                     alignment: Alignment.bottomRight,
@@ -138,7 +67,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
                     padding:EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     onPressed: () {
                       //TODO: Implement create recipe into the API
-                      foo(title, {ingredNames, amounts, units}, steps);
+                      foo(title);
                     },
                     child: Text("Create Recipe",
                         textAlign: TextAlign.center,
@@ -151,36 +80,23 @@ class _CreateRecipeState extends State<CreateRecipe> {
     );
   }
 
-  void foo(String title, Set<List<String>> ingredients, List<Widget> steps)
+  void foo(String title)
   {
-    String jsonCode = "{ \n\"title\" :" + title + ",\n" ;
-    String ingred = "{\n";
-    for(int i = 0; i < count; i++)
-    {
-      ingred += ingredients.elementAt(0)[i] + " ";
-      ingred += ingredients.elementAt(1)[i] + " ";
-      ingred += ingredients.elementAt(2)[i] + "\n";
+    List<String> steps = StepsFormState.stepList;
+    List<String> amt = IngredientsFormState.amountList;
+    List<String> names = IngredientsFormState.nameList;
+    List<String> units = IngredientsFormState.unitList;
+    String json = "{\n\t" + title + ",\n" + "\t{\n";
+    for(int i = 0; i < StepsFormState.count+1; i++){
+      json+= "\t\t\"" + steps.elementAt(i) + "\",\n";
     }
-    ingred += "}";
-    jsonCode += ingred;
-    print(jsonCode);
+    json = json.substring(0, json.length -1) + "\n\t}\n";
+    for(int i = 0; i < IngredientsFormState.count+1; i++) {
+      json += "\t{\n\t\t\"" + names.elementAt(i) + "\",\n\t\t" + amt.elementAt(i) + ",\n\t\t\"" + units.elementAt(i) + "\"\n\t},";
+    }
+    json = json.substring(0,json.length-1) + "\n";
+    json += "}";
+    print(json);
   }
 }
 
-class StepsField extends StatefulWidget {
-  @override
-  _StepsFieldState createState() => _StepsFieldState();
-}
-
-class _StepsFieldState extends State<StepsField> {
-  String step = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-        decoration: InputDecoration(
-          labelText:"Step",
-        )
-    );
-  }
-}

@@ -4,7 +4,7 @@
 
 
 import 'package:brownie_points/pageTemplate.dart';
-import 'file:///C:/git/cop4331_big_project_mobile/brownie_points/lib/pages/register.dart';
+import 'package:brownie_points/pages/register.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'pages/forgotPassword.dart';
