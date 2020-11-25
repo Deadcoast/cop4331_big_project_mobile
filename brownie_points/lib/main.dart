@@ -4,11 +4,11 @@
 
 
 import 'package:brownie_points/pageTemplate.dart';
-import 'package:brownie_points/register.dart';
+import 'file:///C:/git/cop4331_big_project_mobile/brownie_points/lib/pages/register.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'forgotPassword.dart';
-import 'jsonCalls.dart';
+import 'pages/forgotPassword.dart';
+import 'database/jsonCalls.dart';
 
 void main() {
 
@@ -87,7 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => pageTemplate()),
-              );}
+              );
+            }
             else
             {
               Fluttertoast.showToast(

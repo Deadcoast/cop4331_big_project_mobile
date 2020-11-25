@@ -1,9 +1,9 @@
-import 'package:brownie_points/jsonPacks.dart';
-import 'package:brownie_points/savePrefs.dart';
-
 import 'dart:async';
 import 'dart:convert';
+import 'package:brownie_points/database/savePrefs.dart';
 import 'package:http/http.dart' as http;
+
+import 'jsonPacks.dart';
 
 
 class JsonCall {
@@ -35,12 +35,25 @@ class JsonCall {
   {
     RegisterSend rs = RegisterSend(username, password, email, firstname, lastname, usesMetric);
     final response = await http.post(srv + "registerUser", headers: header, body: jsonEncode(rs));
-    var registerInfo = RegisterReceive.fromJson(jsonDecode(response.body));
+    RegisterReceive registerInfo = RegisterReceive.fromJson(jsonDecode(response.body));
 
     if(registerInfo.success) {
       return null;
     }
     return registerInfo.error;
+  }
+
+  static Future<String> resetPassword(String username, String email, String newPass) async
+  {
+    ResetPasswordSend rps = ResetPasswordSend(username, email, newPass);
+    final response = await http.post(srv + "resetPassword", headers: header, body: jsonEncode(rps));
+    ResetPasswordReceive resetInfo = ResetPasswordReceive.fromJson(jsonDecode(response.body));
+
+    if(resetInfo.success){
+      return null;
+    }
+
+    return resetInfo.error;
   }
 
 }

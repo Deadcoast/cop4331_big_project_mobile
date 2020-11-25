@@ -98,3 +98,34 @@ class RegisterReceive {
         usesMetric = json['usesMetric'],
         error = json['error'];
 }
+
+class ResetPasswordSend {
+  final String username;
+  final String email;
+  final String password;
+
+  ResetPasswordSend(this.username, this.email, this.password);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'username' : username,
+      'email' : email,
+      'password' : password,
+    };
+  }
+}
+
+class ResetPasswordReceive {
+  final String userID;
+  final bool success;
+  final String error;
+
+
+  ResetPasswordReceive(this.userID, this.success, this.error);
+
+  ResetPasswordReceive.fromJson(Map<String, dynamic> json)
+      : userID = json['userID'],
+        success = json['success'],
+        error = json['error'];
+}
+
