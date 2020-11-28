@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:brownie_points/database/awsIntegration.dart';
 import 'package:brownie_points/database/savePrefs.dart';
+import 'package:brownie_points/forms/submitImageForm.dart';
 import 'package:http/http.dart' as http;
+import 'package:brownie_points/database/jwtDecode.dart';
 
 import 'jsonPacks.dart';
 
@@ -16,7 +19,8 @@ class JsonCall {
     Map<String, dynamic> js = ls.toJson();
 
     final response = await http.post(srv + "login",headers: header, body: jsonEncode(js));
-    var loginInfo = LoginReceive.fromJson(jsonDecode(response.body));
+    final responseMap = JwtDecoder.getBodyDecoded(response.body);
+    var loginInfo = LoginReceive.fromJson(responseMap);
 
     if (loginInfo.success) {
       EditPreferences.save("username", loginInfo.username);
@@ -35,7 +39,8 @@ class JsonCall {
   {
     RegisterSend rs = RegisterSend(username, password, email, firstname, lastname, usesMetric);
     final response = await http.post(srv + "registerUser", headers: header, body: jsonEncode(rs));
-    RegisterReceive registerInfo = RegisterReceive.fromJson(jsonDecode(response.body));
+    final responseMap = JwtDecoder.getBodyDecoded(response.body);
+    RegisterReceive registerInfo = RegisterReceive.fromJson(responseMap);
 
     if(registerInfo.success) {
       return null;
@@ -47,7 +52,8 @@ class JsonCall {
   {
     ResetPasswordSend rps = ResetPasswordSend(username, email, newPass);
     final response = await http.post(srv + "resetPassword", headers: header, body: jsonEncode(rps));
-    ResetPasswordReceive resetInfo = ResetPasswordReceive.fromJson(jsonDecode(response.body));
+    final responseMap = JwtDecoder.getBodyDecoded(response.body);
+    ResetPasswordReceive resetInfo = ResetPasswordReceive.fromJson(responseMap);
 
     if(resetInfo.success){
       return null;
@@ -56,4 +62,30 @@ class JsonCall {
     return resetInfo.error;
   }
 
+
+  static Future<String> createRecipe(String title, List<String> steps,  List<String> amt, List<String> names, List<String> units, bool public, String category) async
+  {
+    String jsonEncodedRecipe = "";
+    Map<String, String> prefs = await EditPreferences.fetchProfileInfo();
+    String imageURL = await AwsIntegration.uploadImage(ImageFormState.image);
+    jsonEncodedRecipe += "{\"isMetric\":${prefs['metric']},\"picture\": \"$imageURL\",\"publicRecipe\":$public,\"title\":\"$title\", \"author\":\"${prefs['userID']}\",\"instructions\":[";
+    for(int i = 0; i < steps.length; i++)
+    {
+        jsonEncodedRecipe += "{\"instruction\":\"${steps.elementAt(i)}\"},";
+    }
+    jsonEncodedRecipe =jsonEncodedRecipe.substring(0,jsonEncodedRecipe.length-1) + "],";
+    jsonEncodedRecipe += "\"categories\":[\"$category\"],";
+    jsonEncodedRecipe += "\"ingredients\":[";
+    for(int i = 0; i < amt.length; i++)
+    {
+      jsonEncodedRecipe += "{\"ingredient\":\"${names.elementAt(i)}\",";
+      double amts = double.parse(amt.elementAt(i));
+      jsonEncodedRecipe += "\"quantity\":$amts,";
+      jsonEncodedRecipe += "\"unit\":\"${units.elementAt(i)}\"},";
+    }
+    jsonEncodedRecipe =jsonEncodedRecipe.substring(0,jsonEncodedRecipe.length-1) + "]}";
+    final response = await http.post(srv + "createRecipe", headers: header, body: jsonEncodedRecipe);
+    final responseMap = JwtDecoder.getBodyDecoded(response.body);
+    return responseMap['error'];
+  }
 }

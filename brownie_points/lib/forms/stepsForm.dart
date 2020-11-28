@@ -1,3 +1,4 @@
+import 'package:brownie_points/config/Config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class StepsForm extends StatefulWidget {
 class StepsFormState extends State<StepsForm> {
 
 
-  final _formKey = GlobalKey<FormState>();
+  static final formKey = formKeys[3];
   TextEditingController _stepController;
   static List<String> stepList = [null];
   static int count = 0;
@@ -30,14 +31,14 @@ class StepsFormState extends State<StepsForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 10),
             ..._getSteps(),
+            SizedBox(height: 10),
           ],
         ),
       ),
@@ -122,8 +123,15 @@ class _StepsFieldState extends State<StepsField> {
       controller: ctr,
       decoration: InputDecoration(
         labelText:"Step",
+        hintText: " ",
       ),
       onChanged: (v) => StepsFormState.stepList[widget.index] = v,
+      validator: (test)
+      {
+        if(test.isEmpty)
+          return " ";
+        return null;
+      },
     );
   }
 }

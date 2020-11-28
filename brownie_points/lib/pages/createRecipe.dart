@@ -1,7 +1,12 @@
+import 'package:brownie_points/config/Config.dart';
+import 'package:brownie_points/database/jsonCalls.dart';
+import 'package:brownie_points/forms/categoriesForm.dart';
 import 'package:brownie_points/forms/ingredientForm.dart';
 import 'package:brownie_points/forms/stepsForm.dart';
+import 'package:brownie_points/forms/submitImageForm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CreateRecipe extends StatefulWidget {
   @override
@@ -13,21 +18,31 @@ class _CreateRecipeState extends State<CreateRecipe> {
   int count = 1;
   int stepC = 1;
   int index = 0;
+  static final _formKey = formKeys[0];
 
   @override
   Widget build(BuildContext context) {
     TextStyle style = TextStyle(fontFamily: 'sans-serif', fontSize: 20.0);
 
-    final titleField = TextField(
-      obscureText: false,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        labelText: "Title",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular((32.0))),
-      ),
-      onChanged: (text) {
-        title = text;
-      },
+    final titleField = Form(
+      key: _formKey,
+      child: TextFormField(
+        validator: (v) {
+          if(v.isEmpty)
+            return " ";
+          return null;
+        },
+        obscureText: false,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          labelText: "Title",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular((32.0))),
+          hintText: " ",
+        ),
+        onChanged: (text) {
+          title = text;
+        },
+      )
     );
 
     return SingleChildScrollView(
@@ -35,29 +50,13 @@ class _CreateRecipeState extends State<CreateRecipe> {
             padding: EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 titleField,
-                Container(
-                  child: SingleChildScrollView(
-                    child: StepsForm()
-                  ),
-                ),
-                Container(
-                  child:SingleChildScrollView(
-                    child: IngredientsForm(),
-                  ),
-                ),
-                Container(
-                    alignment: Alignment.bottomRight,
-                    child: FlatButton(
-                        child: Icon(Icons.add),
-                        onPressed: () {
-                          setState(() {
-                            count++;
-                          });
-                        }
-                    )
-                ),
+                CategoriesForm(),
+                StepsForm(),
+                IngredientsForm(),
+                ImageForm(),
                 Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.circular(30.0),
@@ -67,7 +66,30 @@ class _CreateRecipeState extends State<CreateRecipe> {
                     padding:EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     onPressed: () {
                       //TODO: Implement create recipe into the API
-                      foo(title);
+                      if(validate())
+                        JsonCall.createRecipe(title,
+                                              StepsFormState.stepList,
+                                              IngredientsFormState.amountList,
+                                              IngredientsFormState.nameList,
+                                              IngredientsFormState.unitList,
+                                              CategoriesFormState.public,
+                                              CategoriesFormState.category)
+                                              .then((val) {
+                          if(val.isEmpty){
+                            //Navigator.pop(context);
+                            //Navigator.push(context,MaterialPageRoute(builder: (context) => CreateRecipe()),);
+                          }
+                          else
+                            {
+                              Fluttertoast.showToast(
+                                  msg: "Internal Server Error",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.deepPurple,
+                                  fontSize: 16.0
+                              );
+                            }
+                        });
                     },
                     child: Text("Create Recipe",
                         textAlign: TextAlign.center,
@@ -80,23 +102,11 @@ class _CreateRecipeState extends State<CreateRecipe> {
     );
   }
 
-  void foo(String title)
-  {
-    List<String> steps = StepsFormState.stepList;
-    List<String> amt = IngredientsFormState.amountList;
-    List<String> names = IngredientsFormState.nameList;
-    List<String> units = IngredientsFormState.unitList;
-    String json = "{\n\t" + title + ",\n" + "\t{\n";
-    for(int i = 0; i < StepsFormState.count+1; i++){
-      json+= "\t\t\"" + steps.elementAt(i) + "\",\n";
+  bool validate(){
+    for(int i = 0; i < formKeys.length; i++) {
+      if ((i != 1) && !formKeys[i].currentState.validate()) return false;
     }
-    json = json.substring(0, json.length -1) + "\n\t}\n";
-    for(int i = 0; i < IngredientsFormState.count+1; i++) {
-      json += "\t{\n\t\t\"" + names.elementAt(i) + "\",\n\t\t" + amt.elementAt(i) + ",\n\t\t\"" + units.elementAt(i) + "\"\n\t},";
-    }
-    json = json.substring(0,json.length-1) + "\n";
-    json += "}";
-    print(json);
+    return true;
   }
 }
 

@@ -1,3 +1,4 @@
+import 'package:brownie_points/config/Config.dart';
 import 'package:brownie_points/database/savePrefs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ class IngredientsForm extends StatefulWidget {
 }
 
 class IngredientsFormState extends State<IngredientsForm> {
-  final _formKey = GlobalKey<FormState>();
+  static final formKey = formKeys[4];
   TextEditingController _nameController;
   static List<String> nameList = [null];
   TextEditingController _amountController;
@@ -34,7 +35,7 @@ class IngredientsFormState extends State<IngredientsForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -52,17 +53,17 @@ class IngredientsFormState extends State<IngredientsForm> {
     List<Widget> ingredientsTextFields = [];
     for (int i = 0; i < nameList.length; i++) {
       ingredientsTextFields.add(
-          Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                children: [
-                  Expanded(flex: 4,child: NameField(i)),
-                  Expanded(flex: 2,child: AmountField(i)),
-                  Expanded(flex: 2,child: UnitDropDown(i)),
-                  _addRemoveButton(i == nameList.length - 1, i),
-                ],
-              )
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            children: [
+              Expanded(flex: 4,child: NameField(i)),
+              Expanded(flex: 2,child: AmountField(i)),
+              Expanded(flex: 2,child: UnitDropDown(i)),
+              _addRemoveButton(i == nameList.length - 1, i),
+            ],
           )
+        )
       );
     }
     return ingredientsTextFields;
@@ -133,8 +134,15 @@ class _AmountFieldState extends State<AmountField> {
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       decoration: InputDecoration(
         labelText:"Amount",
+        helperText: " ",
       ),
       onChanged: (v) => IngredientsFormState.amountList[widget.index] = v,
+      validator: (value)
+      {
+        if(value.isEmpty)
+          return " ";
+        return null;
+      }
     );
   }
 }
@@ -173,8 +181,14 @@ class _NameFieldState extends State<NameField> {
       controller: ctr,
       decoration: InputDecoration(
         labelText:"Ingredient Name",
+        helperText: " ",
       ),
       onChanged: (v) => IngredientsFormState.nameList[widget.index] = v,
+      validator: (value) {
+        if(value.isEmpty)
+          return " ";
+        return null;
+      },
     );
   }
 }
@@ -188,13 +202,15 @@ class UnitDropDown extends StatefulWidget {
 
 class _UnitDropDownState extends State<UnitDropDown> {
   List<String> metric = ['g', 'kg', 'ml', 'l'];
-  List<String> imperial = ['lb', 'oz', 'fl-oz', 'cup', 'qrt', 'gal', 'tbsp', 'tsp'];
+  List<String> imperial = ['lb', 'oz', 'fl-oz', 'cup', 'qt', 'gal', 'tbsp', 'tsp'];
 
 
   @override
   Widget build(BuildContext context) {
 
-    return FutureBuilder<Map<String,String>>(
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+        child: FutureBuilder<Map<String,String>>(
       future: EditPreferences.fetchProfileInfo(),
       builder: (BuildContext context, AsyncSnapshot<Map<String, String>> snapshot){
         Widget child;
@@ -207,11 +223,20 @@ class _UnitDropDownState extends State<UnitDropDown> {
           child = DropdownButtonFormField<String>(
             style: TextStyle(color: Colors.deepPurple),
             value: IngredientsFormState.unitList[widget.index],
+            decoration: const InputDecoration(
+              helperText: " ",
+            ),
             hint: Text("Unit"),
             onChanged: (String newValue) {
               setState(() {
                 IngredientsFormState.unitList[widget.index] = newValue;
               });
+            },
+            validator: (val)
+            {
+              if(val == null)
+                return " ";
+              return null;
             },
             items: unitArr.map<DropdownMenuItem<String>>((String value){
               return DropdownMenuItem<String>(
@@ -234,6 +259,7 @@ class _UnitDropDownState extends State<UnitDropDown> {
         }
         return child;
       }
+    )
     );
   }
 }

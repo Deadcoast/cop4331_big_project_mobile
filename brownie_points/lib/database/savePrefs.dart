@@ -19,6 +19,7 @@ class EditPreferences {
       'first' : await read("first"),
       'last': await read("last"),
       'metric' :await read("metric"),
+      'userID' : await read("userID"),
     };
   }
 }

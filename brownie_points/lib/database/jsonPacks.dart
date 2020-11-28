@@ -128,4 +128,3 @@ class ResetPasswordReceive {
         success = json['success'],
         error = json['error'];
 }
-

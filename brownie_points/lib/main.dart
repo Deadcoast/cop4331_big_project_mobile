@@ -10,8 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'pages/forgotPassword.dart';
 import 'database/jsonCalls.dart';
 
-void main() {
-
+void main() async {
   runApp(MyApp());
 }
 

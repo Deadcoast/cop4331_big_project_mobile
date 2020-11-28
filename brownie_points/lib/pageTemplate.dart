@@ -37,7 +37,7 @@ class _NavBarState extends State<NavBar> {
   ];
 
   final tabs = [
-    SearchPage(),
+    SearchPageForm(),
     Center(child:Text("My Recipes")),
     CreateRecipe(),
     ProfilePage(),
