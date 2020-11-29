@@ -1,8 +1,9 @@
 
 
-import 'package:brownie_points/pages/SearchPage.dart';
+import 'package:brownie_points/pages/searchPage.dart';
 import 'package:brownie_points/pages/createRecipe.dart';
 import 'package:brownie_points/pages/settingsPage.dart';
+import 'package:brownie_points/pages/myRecipesPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,7 @@ class _NavBarState extends State<NavBar> {
 
   final tabs = [
     SearchPageForm(),
-    Center(child:Text("My Recipes")),
+    MyPageForm(),
     CreateRecipe(),
     ProfilePage(),
   ];

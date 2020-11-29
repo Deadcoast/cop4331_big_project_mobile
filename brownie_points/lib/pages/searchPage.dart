@@ -14,9 +14,10 @@ class _SearchPageFormState extends State<SearchPageForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _titleText;
   static int _pge = 1;
+  static String title;
   // ignore: non_constant_identifier_names
   static final int ITEMS_PER_PAGE= 5;
-  List<Recipe> recipes;
+  static List<Recipe> recipes;
   static int currentPageC;
 
 
@@ -34,7 +35,6 @@ class _SearchPageFormState extends State<SearchPageForm> {
 
   void _incrementPage(){
     setState(() {
-      print(currentPageC);
       _pge++;
     });
   }
@@ -70,7 +70,7 @@ class _SearchPageFormState extends State<SearchPageForm> {
                   child: Column(
                     children: [
                       FutureBuilder<FetchRecipesReceive>(
-                        future: JsonCall.fetchRecipe(_titleText.text, CategoriesFormState.category, false, _pge, ITEMS_PER_PAGE),
+                        future: JsonCall.fetchRecipe(title, CategoriesFormState.category, false, _pge, ITEMS_PER_PAGE),
                         builder: (BuildContext context, AsyncSnapshot<FetchRecipesReceive> snapshot){
                           if(snapshot.hasError)
                             return Text(snapshot.error.toString());
@@ -82,14 +82,8 @@ class _SearchPageFormState extends State<SearchPageForm> {
                           return Icon(Icons.error);
                         }
                       ),
-                      Row(children: [
-                          FlatButton(onPressed: _decrementPage,
-                              child: Icon(Icons.remove)
-                          ),
-                          Text("$_pge"),
-                          FlatButton(
-                              onPressed: _incrementPage,
-                              child: Icon(Icons.add))
+                      Row(mainAxisAlignment: MainAxisAlignment.center,children: [
+
                         ]
                       ),
                     ]
@@ -115,6 +109,18 @@ class _SearchPageFormState extends State<SearchPageForm> {
     for(int i = 0; i < currentPageC; i++)
       list.add(createRecipeCard(recipes.elementAt(i).title, recipes.elementAt(i).picture));
 
+    list.add(
+      ButtonBar(
+        alignment: MainAxisAlignment.center,
+        children:[FlatButton(onPressed: (_pge == 1) ? null :_decrementPage,
+            child:  (_pge == 1) ? null :Icon(Icons.remove)
+        ),
+        Text("$_pge"),
+        FlatButton(
+            onPressed: (currentPageC < ITEMS_PER_PAGE) ? null : _incrementPage,
+            child: (currentPageC < ITEMS_PER_PAGE) ? null : Icon(Icons.add)
+        )])
+    );
     return Flexible(
       child:ListView(
         children: list,
@@ -186,7 +192,7 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ctr.text = _SearchPageFormState()._titleText ?? '';
+      ctr.text = _SearchPageFormState.title ?? '';
     });
 
 
@@ -204,6 +210,9 @@ class _SearchBarState extends State<SearchBar> {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular((32.0))),
         hintText: " ",
       ),
+      onChanged: (text){
+        _SearchPageFormState.title = text;
+      },
     );
   }
 }

@@ -43,7 +43,7 @@ class IngredientsDropDown extends StatefulWidget {
 
 class _IngredientsDropDownState extends State<IngredientsDropDown> {
 
-  List<String> categories = ["Breakfast", "Lunch", "Dinner", "Snacks", "Dessert", "Drinks"];
+  List<String> categories = [ "Category","Breakfast", "Lunch", "Dinner", "Snacks", "Dessert", "Drinks"];
   
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,10 @@ class _IngredientsDropDownState extends State<IngredientsDropDown> {
         }).toList(),
         onChanged:(String newVal) {
           setState(() {
-            CategoriesFormState.category = newVal;
+            if(newVal == "Category")
+              CategoriesFormState.category = null;
+            else
+              CategoriesFormState.category = newVal;
           });
         }
     );
