@@ -82,6 +82,11 @@ class Register extends StatelessWidget {
         },
     );
 
+    final metricField = CheckboxListTile(
+      value: metric,
+      onChanged: ((value) => metric = value),
+      title: Text("Metric")
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -105,6 +110,8 @@ class Register extends StatelessWidget {
                   registerPasswordField,
                   SizedBox(height: 15.0),
                   registerEmailField,
+                  SizedBox(height: 15.0),
+                  metricField,
                   SizedBox(height: 15.0),
                   ElevatedButton(
                     child: Text('Register'),

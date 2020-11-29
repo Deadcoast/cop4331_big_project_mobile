@@ -76,8 +76,13 @@ class _CreateRecipeState extends State<CreateRecipe> {
                                               CategoriesFormState.category)
                                               .then((val) {
                           if(val.isEmpty){
-                            //Navigator.pop(context);
-                            //Navigator.push(context,MaterialPageRoute(builder: (context) => CreateRecipe()),);
+                            Fluttertoast.showToast(
+                                msg: "Recipe Created Successfully",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: Colors.deepPurple,
+                                fontSize: 16.0
+                            );
                           }
                           else
                             {
