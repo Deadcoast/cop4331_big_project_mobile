@@ -88,4 +88,15 @@ class JsonCall {
     final responseMap = JwtDecoder.getBodyDecoded(response.body);
     return responseMap['error'];
   }
+
+  static Future<FetchRecipesReceive> fetchRecipe(String title, String category, bool userRecipes, int currentPage, int pageCapacity) async
+  {
+    if (title == "")
+      title = null;
+    FetchRecipesSend frs = FetchRecipesSend(title, category, userRecipes, (await EditPreferences.fetchProfileInfo())['userID'], currentPage, pageCapacity);
+    final response = await http.post(srv + "fetchRecipes", headers: header, body: jsonEncode(frs));
+    final responseMap = JwtDecoder.getBodyDecoded(response.body);
+    FetchRecipesReceive recipes = FetchRecipesReceive.fromJson(responseMap);
+    return recipes;
+  }
 }

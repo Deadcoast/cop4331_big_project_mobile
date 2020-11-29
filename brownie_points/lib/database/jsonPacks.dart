@@ -128,3 +128,65 @@ class ResetPasswordReceive {
         success = json['success'],
         error = json['error'];
 }
+
+class FetchRecipesSend{
+  final String title;
+  final String category;
+  final bool fetchUserRecipes;
+  final String userID;
+  final int currentPage;
+  final int pageCapacity;
+
+  FetchRecipesSend(this.title, this.category, this.fetchUserRecipes, this.userID, this.currentPage, this.pageCapacity);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title' : title,
+      'category' : category,
+      'fetchUserRecipes' : fetchUserRecipes,
+      'userID' : userID,
+      'currentPage' : currentPage,
+      'pageCapacity' : pageCapacity,
+    };
+  }
+}
+
+class FetchRecipesReceive {
+  final List<dynamic> recipes;
+  final int numInPage;
+  final int totalNumRecipes;
+  final String error;
+
+
+  FetchRecipesReceive(this.recipes, this.numInPage, this.totalNumRecipes,
+      this.error);
+
+  FetchRecipesReceive.fromJson(Map<String, dynamic> json)
+      : recipes = json['recipes'],
+        numInPage = json['numInPage'],
+        totalNumRecipes = json['totalNumRecipes'],
+        error = json['error'];
+}
+
+class Recipe {
+  final String id;
+  final String picture;
+  final bool publicRecipe;
+  final String title;
+  final String author;
+  final List<dynamic> instructions;
+  final List<dynamic> categories;
+  final List<dynamic> ingredients;
+
+  Recipe(this.id,this.picture,this.publicRecipe,this.title,this.author, this.instructions,this.categories,this.ingredients);
+
+  Recipe.fromJson(Map<String, dynamic> json)
+      : id = json['_id'],
+        picture = json['picture'],
+        publicRecipe = json['publicRecipe'],
+        title = json['title'],
+        author = json['author'],
+        instructions = json['instructions'],
+        categories = json['categories'],
+        ingredients = json['ingredients'];
+}
