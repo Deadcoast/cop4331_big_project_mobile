@@ -10,7 +10,7 @@ import 'jsonPacks.dart';
 
 
 class JsonCall {
-  static final srv = "http://10.0.2.2:5000/api/";
+  static final srv = "https://brownie-points-4331-6.herokuapp.com/api/";
   static final header = {"Content-Type": "application/json"};
 
   static Future<String> login(String username, String password) async

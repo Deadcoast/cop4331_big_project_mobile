@@ -8,13 +8,13 @@ import 'package:flutter/material.dart';
 
 class SearchPageForm extends StatefulWidget {
   @override
-  _SearchPageFormState createState() => _SearchPageFormState();
+  SearchPageFormState createState() => SearchPageFormState();
 }
 
-class _SearchPageFormState extends State<SearchPageForm> {
+class SearchPageFormState extends State<SearchPageForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _titleText;
-  static int _pge = 1;
+  static int pge = 1;
   static String title;
   // ignore: non_constant_identifier_names
   static final int ITEMS_PER_PAGE= 5;
@@ -36,13 +36,13 @@ class _SearchPageFormState extends State<SearchPageForm> {
 
   void _incrementPage(){
     setState(() {
-      _pge++;
+      pge++;
     });
   }
 
   void _decrementPage(){
     setState(() {
-      _pge--;
+      pge--;
     });
   }
   @override
@@ -60,7 +60,7 @@ class _SearchPageFormState extends State<SearchPageForm> {
                     icon: Icon(Icons.search),
                     onPressed: () {
                       setState((){
-                        _pge = 1;
+                        pge = 1;
                       });
                     }
                   )
@@ -71,7 +71,7 @@ class _SearchPageFormState extends State<SearchPageForm> {
                   child: Column(
                     children: [
                       FutureBuilder<FetchRecipesReceive>(
-                        future: JsonCall.fetchRecipe(title, CategoriesFormState.category, false, _pge, ITEMS_PER_PAGE),
+                        future: JsonCall.fetchRecipe(title, CategoriesFormState.category, false, pge, ITEMS_PER_PAGE),
                         builder: (BuildContext context, AsyncSnapshot<FetchRecipesReceive> snapshot){
                           if(snapshot.hasError)
                             return Text(snapshot.error.toString());
@@ -79,7 +79,7 @@ class _SearchPageFormState extends State<SearchPageForm> {
                             recipes = snapshot.data.recipes.map((recipe2) => Recipe.fromJson(recipe2)).toList();
                             currentPageC = snapshot.data.numInPage;
                             total = snapshot.data.totalNumRecipes;
-                            return _createCards(_pge);
+                            return _createCards(pge);
                           }
                           return Icon(Icons.error);
                         }
@@ -109,13 +109,13 @@ class _SearchPageFormState extends State<SearchPageForm> {
     list.add(
       ButtonBar(
         alignment: MainAxisAlignment.center,
-        children:[FlatButton(onPressed: (_pge == 1) ? null :_decrementPage,
-            child:  (_pge == 1) ? null :Icon(Icons.remove)
+        children:[FlatButton(onPressed: (pge == 1) ? null :_decrementPage,
+            child:  (pge == 1) ? null :Icon(Icons.remove)
         ),
-        Text("$_pge"),
+        Text("$pge"),
         FlatButton(
-            onPressed: (total/ ITEMS_PER_PAGE <= _pge) ? null : _incrementPage,
-            child: (total/ ITEMS_PER_PAGE <= _pge) ? null : Icon(Icons.add)
+            onPressed: (total/ ITEMS_PER_PAGE <= pge) ? null : _incrementPage,
+            child: (total/ ITEMS_PER_PAGE <= pge) ? null : Icon(Icons.add)
         )])
     );
     return Flexible(
@@ -189,7 +189,7 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ctr.text = _SearchPageFormState.title ?? '';
+      ctr.text = SearchPageFormState.title ?? '';
     });
 
 
@@ -208,7 +208,7 @@ class _SearchBarState extends State<SearchBar> {
         hintText: " ",
       ),
       onChanged: (text){
-        _SearchPageFormState.title = text;
+        SearchPageFormState.title = text;
       },
     );
   }

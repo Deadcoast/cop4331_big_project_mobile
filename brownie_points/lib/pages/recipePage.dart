@@ -2,6 +2,8 @@ import 'package:brownie_points/database/jsonCalls.dart';
 import 'package:brownie_points/database/jsonPacks.dart';
 import 'package:brownie_points/database/savePrefs.dart';
 import 'package:brownie_points/pageTemplate.dart';
+import 'package:brownie_points/pages/myRecipesPage.dart';
+import 'package:brownie_points/pages/searchPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -128,6 +130,8 @@ class _RecipePageState extends State<RecipePage> {
                 context,
                 MaterialPageRoute(builder: (context) => PageTemplate()),
               );
+              SearchPageFormState.pge = 1;
+              MyPageFormState.pge = 1;
             },
             child: new Text('Yes'),
           ),

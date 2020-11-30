@@ -34,7 +34,6 @@ dependencies:
   image_picker: ^0.6.7+14
   flutter_dotenv: ^2.1.0
   aws_s3_client: ^0.2.0
-  downloads_path_provider: ^0.1.0
   path_provider: ^1.6.24
 
   # The following adds the Cupertino Icons font to your application.
