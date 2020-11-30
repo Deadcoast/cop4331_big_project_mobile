@@ -190,3 +190,56 @@ class Recipe {
         categories = json['categories'],
         ingredients = json['ingredients'];
 }
+
+class Ingredient{
+  String name;
+  double amtM;
+  String unitM;
+  double amtI;
+  String unitI;
+
+  Ingredient(String list)
+  {
+    int prevComma = 1;
+    int comma = list.indexOf(',');
+
+    name = list.substring(prevComma, comma).trim();
+    prevComma = comma + 1;
+    comma = list.indexOf(',', comma+1);
+
+    amtM = double.parse( list.substring(prevComma, comma));
+    prevComma = comma+1;
+    comma = list.indexOf(',', comma+1);
+
+    unitM = list.substring(prevComma, comma).trim();
+    prevComma = comma + 1;
+    comma = list.indexOf(',', comma+1);
+
+    amtI = double.parse( list.substring(prevComma, comma));
+    prevComma = comma+1;
+    comma = list.indexOf(',', comma+1);
+
+    unitI = list.substring(prevComma, list.length-1).trim();
+  }
+}
+
+class DeleteSend {
+  final String id;
+
+  DeleteSend(this.id);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'recipeID' : id,
+    };
+  }
+}
+
+class DeleteReceive {
+  final bool success;
+  final String error;
+
+  DeleteReceive.fromJson(Map<String, dynamic> json)
+      : success = json['success'],
+        error = json['error'];
+}

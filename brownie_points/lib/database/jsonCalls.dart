@@ -99,4 +99,15 @@ class JsonCall {
     FetchRecipesReceive recipes = FetchRecipesReceive.fromJson(responseMap);
     return recipes;
   }
+
+  static Future<String> deleteRecipe(String id) async
+  {
+    DeleteSend ds = DeleteSend(id);
+    final response = await http.post(srv + "deleteRecipe", headers: header, body: jsonEncode(ds));
+    final responseMap = JwtDecoder.getBodyDecoded(response.body);
+
+    if(responseMap['success'])
+      return responseMap['error'];
+    return null;
+  }
 }

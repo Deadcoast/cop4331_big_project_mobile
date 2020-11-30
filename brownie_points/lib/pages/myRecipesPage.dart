@@ -1,8 +1,10 @@
 import 'package:brownie_points/database/jsonCalls.dart';
 import 'package:brownie_points/database/jsonPacks.dart';
 import 'package:brownie_points/forms/categoriesForm.dart';
+import 'package:brownie_points/pages/recipePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 
 class MyPageForm extends StatefulWidget {
   @override
@@ -18,7 +20,7 @@ class _MyPageFormState extends State<MyPageForm> {
   static final int ITEMS_PER_PAGE= 5;
   static List<Recipe> recipes;
   static int currentPageC;
-
+  static int total = 0;
 
   @override
   void initState() {
@@ -76,6 +78,7 @@ class _MyPageFormState extends State<MyPageForm> {
                                 else if(snapshot.hasData) {
                                   recipes = snapshot.data.recipes.map((recipe2) => Recipe.fromJson(recipe2)).toList();
                                   currentPageC = snapshot.data.numInPage;
+                                  total = snapshot.data.totalNumRecipes;
                                   return _createCards(_pge);
                                 }
                                 return Icon(Icons.error);
@@ -94,19 +97,17 @@ class _MyPageFormState extends State<MyPageForm> {
     );
   }
 
-  Widget createCardFromRecipe(Recipe recipe)
-  {
-    String title = recipe.title;
-    String image = recipe.picture;
-    return createRecipeCard(title, image);
-  }
-
   Widget _createCards(int page) {
 
     List<Widget> list = new List<Widget>();
 
-    for(int i = 0; i < currentPageC; i++)
-      list.add(createRecipeCard(recipes.elementAt(i).title, recipes.elementAt(i).picture));
+    for(int i = 0; i < currentPageC; i++) {
+      Recipe recp = recipes.elementAt(i);
+      list.add(createRecipeCard(recp.title, recp.picture, recp.instructions.cast<String>(), recp.ingredients, recp.author, recp.id));
+    }
+
+    if(list.length == 0)
+      list.add(Align(child: Text("No recipes, try creating one!", style: TextStyle(fontSize: 16)), alignment: Alignment(0, 0)));
 
     list.add(
         ButtonBar(
@@ -116,8 +117,8 @@ class _MyPageFormState extends State<MyPageForm> {
             ),
               Text("$_pge"),
               FlatButton(
-                  onPressed: (currentPageC < ITEMS_PER_PAGE) ? null : _incrementPage,
-                  child: (currentPageC < ITEMS_PER_PAGE) ? null : Icon(Icons.add)
+                  onPressed: (total/ ITEMS_PER_PAGE <= _pge) ? null : _incrementPage,
+                  child: (total/ ITEMS_PER_PAGE <= _pge) ? null : Icon(Icons.add)
               )])
     );
     return Flexible(
@@ -127,7 +128,7 @@ class _MyPageFormState extends State<MyPageForm> {
     );
   }
 
-  Widget createRecipeCard(String name, String image) {
+  Widget createRecipeCard(String name, String image, List<String> steps, List<dynamic> ingredients, String user, String id) {
     Image img;
     try {
       if (image == null || image == "")
@@ -155,7 +156,7 @@ class _MyPageFormState extends State<MyPageForm> {
               img,
               FlatButton(
                 onPressed: () {
-                  //TODO: View
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => RecipePage(id, name, image, steps, ingredients, user)));
                 },
                 child: Text('View'),
               ),

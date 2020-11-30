@@ -80,9 +80,22 @@ class _CreateRecipeState extends State<CreateRecipe> {
                                 msg: "Recipe Created Successfully",
                                 toastLength: Toast.LENGTH_LONG,
                                 gravity: ToastGravity.BOTTOM,
-                                backgroundColor: Colors.deepPurple,
+                                backgroundColor: Colors.deepPurpleAccent,
                                 fontSize: 16.0
                             );
+                            setState(() {
+                              count = 1;
+                              stepC = 1;
+                              index = 0;
+                              title = "";
+                              CategoriesFormState.category = null;
+                              IngredientsFormState.nameList = [null];
+                              IngredientsFormState.amountList = [null];
+                              IngredientsFormState.unitList = [null];
+                              StepsFormState.stepList = [null];
+                              StepsFormState.count = 0;
+                              ImageFormState.image = null;
+                            });
                           }
                           else
                             {

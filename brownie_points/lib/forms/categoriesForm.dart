@@ -11,7 +11,7 @@ class CategoriesFormState extends State<CategoriesForm> {
   
   final _formKey = formKeys[2];
   static String category = null;
-  static bool public = false;
+  static bool public = true;
 
   @override initState() => super.initState();
   

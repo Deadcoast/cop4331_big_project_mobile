@@ -116,7 +116,6 @@ class Register extends StatelessWidget {
                   ElevatedButton(
                     child: Text('Register'),
                     onPressed: () {
-                      //TODO: Implement checks for register
                         JsonCall.register(username, password, email, first, last, metric).then((value) {
                         if(value == null)
                         {
