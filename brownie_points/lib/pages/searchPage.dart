@@ -67,7 +67,7 @@ class SearchPageFormState extends State<SearchPageForm> {
                 ]),
                 SingleChildScrollView(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height*.67,
+                    height: MediaQuery.of(context).size.height*.65,
                   child: Column(
                     children: [
                       FutureBuilder<FetchRecipesReceive>(
