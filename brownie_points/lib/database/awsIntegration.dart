@@ -24,5 +24,6 @@ class AwsIntegration {
     print("$bucketURI"+imageName);
     if(tag != null)
       return bucketURI + imageName;
+    return "https://banner.uclipart.com/20200112/lqt/mexican-food-cartoon-line.png";
   }
 }

@@ -10,7 +10,7 @@ class CategoriesForm extends StatefulWidget {
 class CategoriesFormState extends State<CategoriesForm> {
   
   final _formKey = formKeys[2];
-  static String category = null;
+  static String category;
   static bool public = true;
 
   @override initState() => super.initState();

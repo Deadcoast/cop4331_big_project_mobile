@@ -23,12 +23,7 @@ class JsonCall {
     var loginInfo = LoginReceive.fromJson(responseMap);
 
     if (loginInfo.success) {
-      EditPreferences.save("username", loginInfo.username);
-      EditPreferences.save("email", loginInfo.email);
-      EditPreferences.save("metric",loginInfo.usesMetric);
-      EditPreferences.save("userID", loginInfo.userID);
-      EditPreferences.save("first", loginInfo.firstname);
-      EditPreferences.save("last", loginInfo.lastname);
+      EditPreferences.updateUserInfo(loginInfo.firstname, loginInfo.lastname, loginInfo.email, loginInfo.username, loginInfo.usesMetric.toString(), loginInfo.userID);
       return null;
     }
 
@@ -51,14 +46,13 @@ class JsonCall {
   static Future<String> resetPassword(String username, String email, String newPass) async
   {
     ResetPasswordSend rps = ResetPasswordSend(username, email, newPass);
-    final response = await http.post(srv + "resetPassword", headers: header, body: jsonEncode(rps));
+    final response = await http.post(srv + "SendResetPasswordEmail", headers: header, body: jsonEncode(rps));
+    print("/${response.body}/");
     final responseMap = JwtDecoder.getBodyDecoded(response.body);
     ResetPasswordReceive resetInfo = ResetPasswordReceive.fromJson(responseMap);
-
     if(resetInfo.success){
       return null;
     }
-
     return resetInfo.error;
   }
 
@@ -109,5 +103,26 @@ class JsonCall {
     if(responseMap['success'])
       return responseMap['error'];
     return null;
+  }
+
+  static Future<String> updateUserInfo(String first, String last, String user, String email, bool metric) async
+  {
+    String id = await EditPreferences.read('userID');
+    String jsonPack = "{\"userID\":\"$id\",\"newInfo\":{";
+    if(first != null)
+      jsonPack += "\"firstName\":\"${first.trim()}\",";
+    if(last != null)
+      jsonPack += "\"lastName\":\"${last.trim()}\",";
+    if(user != null)
+      jsonPack += "\"userName\":\"${user.trim()}\",";
+    if(email != null)
+      jsonPack += "\"email\":\"${email.trim()}\",";
+    jsonPack += "\"usesMetric\":$metric}}";
+    final response = await http.post(srv + "updateUserInfo", headers: header, body: jsonPack);
+    final responseMap = JwtDecoder.getBodyDecoded(response.body);
+    EditPreferences.updateUserInfo(first, last, email, user, metric.toString(), id);
+    if(responseMap['success'])
+      return null;
+    return responseMap['error'];
   }
 }

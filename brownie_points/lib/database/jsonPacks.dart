@@ -243,3 +243,23 @@ class DeleteReceive {
       : success = json['success'],
         error = json['error'];
 }
+
+class User {
+  final String first;
+  final String last;
+  final String email;
+  final String user;
+  final bool metric;
+
+  User(this.first, this.last, this.email, this.user, this.metric);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'firstName' : first,
+      'lastName' : last,
+      'usesMetric' : metric,
+      'email' : email,
+      'userName' : user
+    };
+  }
+}
