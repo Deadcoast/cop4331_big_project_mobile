@@ -19,6 +19,16 @@ class EditPreferences {
       'first' : await read("first"),
       'last': await read("last"),
       'metric' :await read("metric"),
+      'userID' : await read("userID"),
     };
+  }
+
+  static void updateUserInfo(String firstname, String lastname, String email, String username, String usesMetric, String userID){
+    if (username != null) EditPreferences.save("username", username);
+    if (email != null) EditPreferences.save("email", email);
+    if (usesMetric != null) EditPreferences.save("metric", usesMetric);
+    if (userID != null) EditPreferences.save("userID", userID);
+    if (firstname != null) EditPreferences.save("first", firstname);
+    if (lastname != null) EditPreferences.save("last", lastname);
   }
 }
